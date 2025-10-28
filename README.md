@@ -1,6 +1,6 @@
-# MCP GitHub Server
+# MCP Dev Tools Server
 
-Un servidor MCP (Model Context Protocol) con integración de GitHub implementado en Node.js con TypeScript.
+Un servidor MCP (Model Context Protocol) con integración de GitHub y GitLab implementado en Node.js con TypeScript, desplegado en AWS Lambda.
 
 ## Características
 
@@ -13,41 +13,46 @@ Un servidor MCP (Model Context Protocol) con integración de GitHub implementado
 - ✅ Hot reload con nodemon
 - ✅ Manejo de errores
 
-## Instalación
+## 🚀 Despliegue en AWS Lambda
 
+### Instalación
 ```bash
 npm install
 ```
 
-## Configuración
-
-1. **Configurar variables de entorno** (copia `github-config.example` a `.env`):
+### Configuración
+1. **Configurar AWS CLI**:
 ```bash
-cp github-config.example .env
+aws configure
 ```
 
-2. **Editar `.env`** con tu token de GitHub:
-```env
-# Configuración de GitHub
-GITHUB_TOKEN=ghp_tu_token_aqui
+2. **Configurar variables de entorno**:
+```bash
+export GITHUB_TOKEN="tu_token_de_github"
+export GITLAB_TOKEN="tu_token_de_gitlab"  # Opcional
+export GITLAB_HOST="https://gitlab.com"
 ```
 
-3. **Configurar GitHub**:
-   - Sigue las instrucciones en `github-config.example`
-   - Crea un Personal Access Token en GitHub
-   - Configura los permisos necesarios
+3. **Desplegar**:
+```bash
+# Opción 1: Script automático
+./deploy.sh
 
-## Desarrollo
+# Opción 2: Manual
+npm run lambda:build
+npm run lambda:deploy
+```
 
+### Desarrollo Local
 ```bash
 # Modo desarrollo con hot reload
 npm run dev
 
+# Probar Lambda localmente
+npm run lambda:offline
+
 # Compilar TypeScript
 npm run build
-
-# Ejecutar versión compilada
-npm start
 ```
 
 ## Herramientas Disponibles

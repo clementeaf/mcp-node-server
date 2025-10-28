@@ -1,5 +1,5 @@
-import { Server } from '@modelcontextprotocol/sdk/server/index.js';
-import { 
+const { Server } = require('@modelcontextprotocol/sdk/server/index.js');
+const { 
   getCurrentUser,
   getUserRepos,
   getRepo,
@@ -14,22 +14,22 @@ import {
   getRepoStats,
   getUser,
   getUserReposByUsername
-} from '../dist/github.js';
+} = require('../dist/github.js');
 
-import {
-  getCurrentUser as getGitLabUser,
-  getUserProjects as getGitLabProjects,
+const {
+  getCurrentUser: getGitLabUser,
+  getUserProjects: getGitLabProjects,
   getProject,
   getProjectIssues,
-  createIssue as createGitLabIssue,
+  createIssue: createGitLabIssue,
   getMergeRequests,
   createMergeRequest
-} from '../dist/gitlab.js';
+} = require('../dist/gitlab.js');
 
 // Crear el servidor MCP
 const server = new Server(
   {
-    name: 'mcp-github-server',
+    name: 'mcp-dev-tools-server',
     version: '1.0.0',
   },
   {
@@ -64,7 +64,6 @@ const tools = [
       properties: {},
     },
   },
-
   // Herramientas de GitHub
   {
     name: 'github_get_user',
@@ -342,7 +341,6 @@ const tools = [
       required: ['username'],
     },
   },
-
   // Herramientas de GitLab
   {
     name: 'gitlab_get_user',
@@ -838,23 +836,34 @@ server.setRequestHandler('tools/call', async (request) => {
   }
 });
 
-export default async function handler(req, res) {
+// Handler principal de Lambda
+exports.handler = async (event, context) => {
   // Configurar CORS
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  const headers = {
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+  };
 
-  if (req.method === 'OPTIONS') {
-    res.status(200).end();
-    return;
+  if (event.httpMethod === 'OPTIONS') {
+    return {
+      statusCode: 200,
+      headers,
+      body: '',
+    };
   }
 
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
+  if (event.httpMethod !== 'POST') {
+    return {
+      statusCode: 405,
+      headers,
+      body: JSON.stringify({ error: 'Method not allowed' }),
+    };
   }
 
   try {
-    const { method, params } = req.body;
+    const body = JSON.parse(event.body);
+    const { method, params } = body;
 
     let result;
     if (method === 'tools/list') {
@@ -862,24 +871,36 @@ export default async function handler(req, res) {
     } else if (method === 'tools/call') {
       result = await server.requestHandler('tools/call', params);
     } else {
-      return res.status(400).json({ error: 'Unknown method' });
+      return {
+        statusCode: 400,
+        headers,
+        body: JSON.stringify({ error: 'Unknown method' }),
+      };
     }
 
-    res.status(200).json({
-      jsonrpc: '2.0',
-      id: req.body.id || 1,
-      result: result
-    });
+    return {
+      statusCode: 200,
+      headers,
+      body: JSON.stringify({
+        jsonrpc: '2.0',
+        id: body.id || 1,
+        result: result
+      }),
+    };
   } catch (error) {
     console.error('Error processing request:', error);
-    res.status(500).json({
-      jsonrpc: '2.0',
-      id: req.body.id || 1,
-      error: {
-        code: -32603,
-        message: 'Internal error',
-        data: error.message
-      }
-    });
+    return {
+      statusCode: 500,
+      headers,
+      body: JSON.stringify({
+        jsonrpc: '2.0',
+        id: event.body?.id || 1,
+        error: {
+          code: -32603,
+          message: 'Internal error',
+          data: error.message
+        }
+      }),
+    };
   }
-}
+};

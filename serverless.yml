@@ -1,0 +1,74 @@
+service: mcp-dev-tools-server
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: us-east-1
+  stage: ${opt:stage, 'dev'}
+  environment:
+    GITHUB_TOKEN: ${env:GITHUB_TOKEN}
+    GITLAB_HOST: ${env:GITLAB_HOST, 'https://gitlab.com'}
+    GITLAB_TOKEN: ${env:GITLAB_TOKEN}
+  timeout: 30
+  memorySize: 512
+  apiGateway:
+    restApiId: ${env:API_GATEWAY_REST_API_ID, ''}
+    restApiRootResourceId: ${env:API_GATEWAY_REST_API_ROOT_RESOURCE_ID, ''}
+    binaryMediaTypes:
+      - '*/*'
+
+functions:
+  mcp:
+    handler: lambda/handler.handler
+    events:
+      - http:
+          path: /mcp
+          method: post
+          cors: true
+      - http:
+          path: /mcp
+          method: options
+          cors: true
+    environment:
+      GITHUB_TOKEN: ${env:GITHUB_TOKEN}
+      GITLAB_HOST: ${env:GITLAB_HOST, 'https://gitlab.com'}
+      GITLAB_TOKEN: ${env:GITLAB_TOKEN}
+
+plugins:
+  - serverless-offline
+  - serverless-webpack
+
+custom:
+  webpack:
+    webpackConfig: webpack.config.js
+    includeModules: true
+    packager: npm
+    excludeFiles: src/**/*.test.js
+  serverless-offline:
+    httpPort: 3000
+    host: 0.0.0.0
+
+package:
+  exclude:
+    - .git/**
+    - .gitignore
+    - README.md
+    - test/**
+    - .env
+    - .env.*
+    - node_modules/.cache/**
+    - coverage/**
+    - .nyc_output/**
+    - .serverless/**
+    - dist/**
+    - src/**
+    - tsconfig.json
+    - nodemon.json
+    - test-*.js
+    - setup-cursor.sh
+    - CURSOR_SETUP.md
+    - TEST_RESULTS.md
+    - github-config.example
+    - cursor-config.json
+    - vercel.json
+    - api/**
