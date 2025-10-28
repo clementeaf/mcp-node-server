@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "mcp-dev-tools-server": {
+      "command": "node",
+      "args": ["/Users/clementefalcone/Desktop/personal/mcp-node-server/dist/index.js"],
+      "env": {
+        "GITHUB_TOKEN": "YOUR_GITHUB_TOKEN_HERE",
+        "GITLAB_HOST": "https://gitlab.com"
+      }
+    }
+  }
+}

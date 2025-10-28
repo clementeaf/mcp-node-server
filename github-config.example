@@ -1,0 +1,80 @@
+# Configuración de GitHub para MCP Server
+
+## 1. Crear un Personal Access Token
+
+1. Ve a [GitHub Settings](https://github.com/settings/tokens)
+2. Haz clic en **"Generate new token"** > **"Generate new token (classic)"**
+3. Configura el token:
+   - **Note**: "MCP GitHub Server"
+   - **Expiration**: Selecciona la duración que prefieras
+   - **Scopes**: Selecciona los siguientes permisos:
+     - ✅ `repo` (Full control of private repositories)
+     - ✅ `public_repo` (Access public repositories)
+     - ✅ `user` (Read user profile data)
+     - ✅ `read:org` (Read org and team membership)
+
+4. Haz clic en **"Generate token"**
+5. **¡IMPORTANTE!** Copia el token (solo se muestra una vez)
+
+## 2. Configurar variables de entorno
+
+Crea un archivo `.env` con:
+
+```env
+# Configuración de GitHub
+GITHUB_TOKEN=ghp_tu_token_aqui
+```
+
+## 3. Configurar Cursor
+
+Agrega a tu configuración de Cursor:
+
+```json
+{
+  "mcpServers": {
+    "mcp-github-server": {
+      "command": "node",
+      "args": ["/ruta/a/tu/proyecto/dist/index.js"],
+      "env": {
+        "GITHUB_TOKEN": "ghp_tu_token_aqui"
+      }
+    }
+  }
+}
+```
+
+## 4. Casos de uso
+
+Una vez configurado, podrás usar comandos como:
+
+- "¿Cuáles son mis repositorios de GitHub?"
+- "Busca repositorios de TypeScript con más estrellas"
+- "Muéstrame los issues abiertos del repositorio microsoft/vscode"
+- "Crea un nuevo issue en mi repositorio"
+- "¿Cuáles son los últimos commits del repositorio?"
+- "Muéstrame el contenido del archivo README.md"
+- "¿Cuáles son los releases de este repositorio?"
+
+## 5. Herramientas disponibles
+
+### Información del usuario
+- `github_get_user` - Información del usuario autenticado
+- `github_get_user_by_username` - Información de un usuario específico
+- `github_get_user_repos` - Repositorios de un usuario específico
+
+### Repositorios
+- `github_get_repos` - Repositorios del usuario autenticado
+- `github_get_repo` - Información de un repositorio específico
+- `github_search_repos` - Buscar repositorios
+- `github_get_repo_stats` - Estadísticas de un repositorio
+
+### Issues y Pull Requests
+- `github_get_issues` - Issues de un repositorio
+- `github_create_issue` - Crear un nuevo issue
+- `github_get_pull_requests` - Pull requests de un repositorio
+- `github_create_pull_request` - Crear un nuevo pull request
+
+### Contenido y commits
+- `github_get_commits` - Commits de un repositorio
+- `github_get_file_content` - Contenido de un archivo
+- `github_get_releases` - Releases de un repositorio
