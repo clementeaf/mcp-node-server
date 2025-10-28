@@ -1,0 +1,119 @@
+---
+description: Estándares de Desarrollo
+globs:
+alwaysApply: true
+---
+
+# Reglas de TypeScript - APLICACIÓN AUTOMÁTICA
+
+**IMPORTANTE**: Estas reglas deben aplicarse AUTOMÁTICAMENTE en cada solicitud de código TypeScript.
+
+## Configuración Estricta
+
+### 1. Prohibición de `any`
+- **Nunca usar `any`**: El tipo `any` desactiva completamente el sistema de tipos
+- **Alternativas recomendadas**:
+  - `unknown` para valores de tipo desconocido
+  - `object` para objetos genéricos
+  - Tipos específicos cuando sea posible
+  - Uniones de tipos para múltiples posibilidades
+
+### 2. Prohibición de `implicit any`
+- **Todos los tipos deben ser explícitos**
+- **Configuración de TypeScript**:
+  ```json
+  {
+    "compilerOptions": {
+      "noImplicitAny": true,
+      "strict": true,
+      "strictNullChecks": true,
+      "strictFunctionTypes": true,
+      "noImplicitReturns": true,
+      "noImplicitThis": true
+    }
+  }
+  ```
+
+### 3. Tipado de Funciones
+- **Parámetros**: Todos los parámetros deben tener tipos explícitos
+- **Valor de retorno**: Siempre especificar el tipo de retorno
+- **Funciones async**: Usar `Promise<T>` para el tipo de retorno
+
+### 4. Interfaces y Tipos
+- **Interfaces para objetos complejos**: Definir interfaces claras
+- **Tipos para uniones**: Usar `type` para uniones de tipos
+- **Genéricos**: Aprovechar los genéricos para reutilización de código
+
+## Ejemplos de Implementación
+
+### ✅ Correcto
+```typescript
+interface User {
+  id: number;
+  name: string;
+  email: string;
+}
+
+interface ApiResponse<T> {
+  data: T;
+  status: number;
+  message: string;
+}
+
+async function fetchUser(id: number): Promise<ApiResponse<User>> {
+  // Implementación
+}
+
+function processData<T>(data: T[]): T[] {
+  return data.filter(item => item !== null);
+}
+```
+
+### ❌ Incorrecto
+```typescript
+// ❌ Uso de any
+function processData(data: any): any {
+  return data;
+}
+
+// ❌ Implicit any
+function calculate(a, b) {
+  return a + b;
+}
+
+// ❌ Sin tipo de retorno
+function getUser(id: number) {
+  return { id, name: "test" };
+}
+```
+
+## Herramientas de Verificación
+
+### ESLint Rules
+```json
+{
+  "rules": {
+    "@typescript-eslint/no-explicit-any": "error",
+    "@typescript-eslint/no-implicit-any": "error",
+    "@typescript-eslint/explicit-function-return-type": "error",
+    "@typescript-eslint/explicit-module-boundary-types": "error"
+  }
+}
+```
+
+### Pre-commit Hooks
+- Verificar tipos antes de cada commit
+- Ejecutar `tsc --noEmit` para verificación de tipos
+- Usar `eslint` con reglas de TypeScript estrictas
+
+## INSTRUCCIONES AUTOMÁTICAS PARA EL ASISTENTE
+
+**EN CADA RESPUESTA DE CÓDIGO TYPESCRIPT**:
+
+1. **NUNCA** usar `any` - usar `unknown` o tipos específicos
+2. **SIEMPRE** tipar explícitamente todos los parámetros
+3. **SIEMPRE** especificar el tipo de retorno de funciones
+4. **SIEMPRE** usar interfaces para objetos complejos
+5. **SIEMPRE** aprovechar genéricos cuando sea apropiado
+6. **SIEMPRE** verificar que no hay `implicit any`
+7. **SIEMPRE** usar tipos estrictos de TypeScript

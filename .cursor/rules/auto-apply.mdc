@@ -1,0 +1,87 @@
+---
+description: Estándares de Desarrollo
+globs:
+alwaysApply: true
+---
+
+# Aplicación Automática de Reglas
+
+## Configuración para Cursor
+
+Este archivo contiene las instrucciones específicas para que Cursor aplique automáticamente las reglas de desarrollo.
+
+### Instrucciones para el Asistente de IA
+
+**OBLIGATORIO**: Aplicar automáticamente estas reglas en CADA solicitud de código, sin necesidad de que el usuario las mencione:
+
+#### 1. Principios de Desarrollo
+- **SOLID**: Aplicar principios de diseño orientado a objetos
+- **DRY**: Evitar duplicación de código
+- **YAGNI**: No implementar funcionalidad innecesaria
+
+#### 2. TypeScript Estricto
+- **NUNCA** usar `any` o `implicit any`
+- **SIEMPRE** tipar explícitamente funciones y variables
+- **SIEMPRE** especificar tipos de retorno
+- **SIEMPRE** usar interfaces para objetos complejos
+
+#### 3. Documentación
+- **SIEMPRE** agregar comentarios JSDoc a funciones
+- **NUNCA** incluir emojis en código
+- **SIEMPRE** mantener comentarios breves y claros
+
+#### 4. Funciones Completas
+- **NUNCA** dejar funciones con contenido "TODO"
+- **SIEMPRE** implementar funciones completamente
+- **SIEMPRE** asegurar intención y finalidad claras
+- **SIEMPRE** mantener responsabilidad única
+
+### Comportamiento Esperado
+
+El asistente debe:
+1. **Aplicar automáticamente** todas las reglas sin mencionarlas
+2. **Verificar** el cumplimiento antes de entregar código
+3. **Corregir** automáticamente violaciones de las reglas
+4. **Implementar** funciones completas y funcionales
+5. **Documentar** apropiadamente con JSDoc
+
+### Ejemplo de Aplicación Automática
+
+Cuando el usuario solicite una función, el asistente debe:
+
+```typescript
+/**
+ * Calcula el área de un rectángulo
+ * @param width - Ancho del rectángulo
+ * @param height - Alto del rectángulo
+ * @returns Área calculada
+ */
+function calculateRectangleArea(width: number, height: number): number {
+  return width * height;
+}
+```
+
+**NO** debe entregar:
+```typescript
+// ❌ Sin tipos explícitos
+function calculateArea(w, h) {
+  return w * h;
+}
+
+// ❌ Con TODO
+function calculateArea(width: number, height: number): number {
+  // TODO: implementar cálculo
+}
+```
+
+### Verificación Automática
+
+Antes de entregar cualquier código, verificar:
+- [ ] Tipos explícitos
+- [ ] Sin uso de `any`
+- [ ] Comentarios JSDoc
+- [ ] Sin emojis
+- [ ] Función completamente implementada
+- [ ] Sin TODOs
+- [ ] Responsabilidad única
+- [ ] Resultado esperado claro

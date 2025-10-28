@@ -40,3 +40,5 @@ coverage/
 
 # TypeScript cache
 *.tsbuildinfo
+.serverless/
+.webpack/

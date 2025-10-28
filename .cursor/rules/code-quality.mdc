@@ -1,0 +1,136 @@
+
+# Calidad de Código - APLICACIÓN AUTOMÁTICA
+
+**IMPORTANTE**: Estas reglas deben aplicarse AUTOMÁTICAMENTE en cada solicitud de código.
+
+## Estándares de Documentación
+
+### 1. Comentarios de Funciones
+- **Solo JSDoc como encabezado**: Únicamente comentarios de documentación para funciones
+- **Formato estándar**:
+  ```typescript
+  /**
+   * Descripción breve de la función
+   * @param param1 - Descripción del parámetro
+   * @param param2 - Descripción del parámetro
+   * @returns Descripción del valor de retorno
+   */
+  ```
+
+### 2. Prohibición de Emojis
+- **Sin emojis en código**: No usar emojis en:
+  - Comentarios
+  - Nombres de variables
+  - Nombres de funciones
+  - Strings de la aplicación
+  - Mensajes de log
+
+### 3. Código Autodocumentado
+- **Nombres descriptivos**: Variables y funciones con nombres claros
+- **Estructura clara**: Código organizado y legible
+- **Evitar comentarios innecesarios**: El código debe ser autoexplicativo
+
+## Desarrollo de Funciones
+
+### 1. Prohibición de TODOs
+- **No generar funciones con contenido "TODO"**
+- **Si no hay claridad**: Preguntar antes de implementar
+- **Funciones completas**: Cada función debe estar totalmente implementada
+
+### 2. Criterios de Completitud
+Antes de considerar una función como terminada, debe tener:
+- **Intención clara**: ¿Qué hace la función?
+- **Finalidad definida**: ¿Para qué se usa?
+- **Responsabilidad única**: ¿Cuál es su propósito específico?
+- **Resultado esperado**: ¿Qué devuelve y en qué formato?
+
+### 3. Proceso de Desarrollo
+1. **Definir claramente** la intención y finalidad
+2. **Especificar** la responsabilidad única
+3. **Definir** el resultado esperado
+4. **Implementar** completamente la función
+5. **Verificar** que cumple todos los criterios
+
+## Ejemplos de Buenas Prácticas
+
+### ✅ Correcto
+```typescript
+/**
+ * Valida que un email tenga formato correcto
+ * @param email - Email a validar
+ * @returns true si el email es válido, false en caso contrario
+ */
+function isValidEmail(email: string): boolean {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+}
+
+/**
+ * Convierte un objeto User a formato de API
+ * @param user - Usuario a convertir
+ * @returns Objeto en formato de API
+ */
+function userToApiFormat(user: User): ApiUser {
+  return {
+    id: user.id,
+    name: user.name,
+    email: user.email,
+    createdAt: user.createdAt.toISOString()
+  };
+}
+```
+
+### ❌ Incorrecto
+```typescript
+// ❌ Función con TODO
+function processUser() {
+  // TODO: implementar lógica
+}
+
+// ❌ Comentarios innecesarios
+function add(a: number, b: number): number {
+  // Sumar a y b
+  return a + b; // Devolver resultado
+}
+
+// ❌ Uso de emojis
+function getUser() {
+  // 🚀 Obtener usuario
+  return { name: "test" };
+}
+
+// ❌ Función sin propósito claro
+function doSomething(data: any): any {
+  // Hacer algo con los datos
+  return data;
+}
+```
+
+## Checklist de Revisión AUTOMÁTICA
+
+**OBLIGATORIO**: Verificar automáticamente en cada solicitud de código:
+
+- [ ] ¿Tiene comentario JSDoc como encabezado?
+- [ ] ¿El comentario es breve y claro?
+- [ ] ¿No contiene emojis?
+- [ ] ¿Está completamente implementada?
+- [ ] ¿No contiene "TODO" o comentarios de implementación pendiente?
+- [ ] ¿Su intención es clara?
+- [ ] ¿Su finalidad está definida?
+- [ ] ¿Tiene una responsabilidad única?
+- [ ] ¿El resultado esperado está especificado?
+- [ ] ¿El código es autoexplicativo?
+
+## INSTRUCCIONES AUTOMÁTICAS PARA EL ASISTENTE
+
+**EN CADA RESPUESTA DE CÓDIGO**:
+
+1. **SIEMPRE** agregar comentarios JSDoc a funciones
+2. **NUNCA** incluir emojis en código o comentarios
+3. **NUNCA** dejar funciones con "TODO" o contenido incompleto
+4. **SIEMPRE** implementar funciones completamente
+5. **SIEMPRE** asegurar que la intención es clara
+6. **SIEMPRE** definir la finalidad de cada función
+7. **SIEMPRE** mantener responsabilidad única por función
+8. **SIEMPRE** especificar el resultado esperado
+9. **SIEMPRE** escribir código autoexplicativo

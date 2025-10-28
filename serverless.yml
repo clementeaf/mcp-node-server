@@ -9,17 +9,15 @@ provider:
     GITHUB_TOKEN: ${env:GITHUB_TOKEN}
     GITLAB_HOST: ${env:GITLAB_HOST, 'https://gitlab.com'}
     GITLAB_TOKEN: ${env:GITLAB_TOKEN}
-  timeout: 30
-  memorySize: 512
+  timeout: 60
+  memorySize: 1024
   apiGateway:
-    restApiId: ${env:API_GATEWAY_REST_API_ID, ''}
-    restApiRootResourceId: ${env:API_GATEWAY_REST_API_ROOT_RESOURCE_ID, ''}
     binaryMediaTypes:
       - '*/*'
 
 functions:
   mcp:
-    handler: lambda/handler.handler
+    handler: lambda/handler-simple-real.handler
     events:
       - http:
           path: /mcp
@@ -36,7 +34,6 @@ functions:
 
 plugins:
   - serverless-offline
-  - serverless-webpack
 
 custom:
   webpack:
@@ -44,6 +41,7 @@ custom:
     includeModules: true
     packager: npm
     excludeFiles: src/**/*.test.js
+    keepOutputDirectory: true
   serverless-offline:
     httpPort: 3000
     host: 0.0.0.0

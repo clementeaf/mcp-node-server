@@ -1,11 +1,22 @@
-const path = require('path');
+import path from 'path';
+import { fileURLToPath } from 'url';
 
-module.exports = {
-  entry: './lambda/handler.js',
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+export default {
+  entry: './lambda/handler-real.js',
   target: 'node',
   mode: 'production',
   externals: {
     'aws-sdk': 'aws-sdk',
+  },
+  resolve: {
+    fallback: {
+      "fs": false,
+      "path": false,
+      "os": false
+    }
   },
   module: {
     rules: [
@@ -31,6 +42,7 @@ module.exports = {
     libraryTarget: 'commonjs2',
     path: path.join(__dirname, '.webpack'),
     filename: 'handler.js',
+    library: 'handler',
   },
   optimization: {
     minimize: true,

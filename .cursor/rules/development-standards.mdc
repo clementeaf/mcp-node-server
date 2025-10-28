@@ -1,0 +1,104 @@
+---
+description: Estándares de Desarrollo
+globs:
+alwaysApply: true
+---
+
+- Use our internal RPC pattern when defining services
+- Always use snake_case for service names.
+
+@service-template.ts
+
+# Estándares de Desarrollo - APLICACIÓN AUTOMÁTICA
+
+**IMPORTANTE**: Estas reglas deben aplicarse AUTOMÁTICAMENTE en cada solicitud de código, sin necesidad de mencionarlas explícitamente.
+
+## Principios Fundamentales
+
+### 1. Principios SOLID, DRY y YAGNI
+- **SOLID**: Aplicar los cinco principios de diseño orientado a objetos
+  - Single Responsibility Principle (SRP)
+  - Open/Closed Principle (OCP)
+  - Liskov Substitution Principle (LSP)
+  - Interface Segregation Principle (ISP)
+  - Dependency Inversion Principle (DIP)
+- **DRY**: Don't Repeat Yourself - Evitar duplicación de código
+- **YAGNI**: You Aren't Gonna Need It - No implementar funcionalidad hasta que sea necesaria
+
+### 2. Tipado Estricto
+- **Prohibido el uso de `any`**: Nunca usar el tipo `any` en TypeScript
+- **Prohibido `implicit any`**: Todos los tipos deben ser explícitos
+- **Tipado completo**: Todas las variables, parámetros y valores de retorno deben tener tipos definidos
+- **Interfaces claras**: Definir interfaces para objetos complejos
+
+### 3. Archivos Limpios
+- **Comentarios únicamente como encabezado de función**: Solo comentarios JSDoc para documentar funciones
+- **Comentarios breves y claros**: Máximo 2-3 líneas por función
+- **Sin emojis**: No usar emojis en comentarios, nombres de variables o código
+- **Código autodocumentado**: El código debe ser legible sin necesidad de comentarios explicativos
+
+### 4. Desarrollo de Funciones
+- **No generar funciones con contenido "TODO"**: Si no hay claridad sobre la intención, finalidad, responsabilidad y resultado esperado, preguntar antes de implementar
+- **Funciones completas**: Cada función debe tener una implementación completa y funcional
+- **Responsabilidad única**: Cada función debe tener una responsabilidad clara y específica
+- **Resultado esperado**: El comportamiento y valor de retorno deben estar claramente definidos
+
+## Ejemplos de Buenas Prácticas
+
+### ✅ Correcto
+```typescript
+/**
+ * Calcula el área de un rectángulo
+ * @param width - Ancho del rectángulo
+ * @param height - Alto del rectángulo
+ * @returns Área calculada
+ */
+function calculateRectangleArea(width: number, height: number): number {
+  return width * height;
+}
+```
+
+### ❌ Incorrecto
+```typescript
+// ❌ Uso de any
+function processData(data: any): any {
+  return data;
+}
+
+// ❌ Función con TODO
+function processUser() {
+  // TODO: implementar lógica de procesamiento
+}
+
+// ❌ Comentarios innecesarios
+function add(a: number, b: number): number {
+  // Sumar a y b
+  return a + b; // Devolver resultado
+}
+```
+
+## Checklist de Revisión AUTOMÁTICA
+
+**OBLIGATORIO**: Verificar automáticamente en cada solicitud de código:
+
+- [ ] ¿Tiene un tipo de retorno explícito?
+- [ ] ¿Todos los parámetros están tipados?
+- [ ] ¿No usa `any` o `implicit any`?
+- [ ] ¿Tiene un comentario JSDoc como encabezado?
+- [ ] ¿El comentario es breve y claro?
+- [ ] ¿No contiene emojis?
+- [ ] ¿Está completamente implementada?
+- [ ] ¿Su responsabilidad es clara y única?
+- [ ] ¿El resultado esperado está definido?
+
+## INSTRUCCIONES PARA EL ASISTENTE
+
+**SIEMPRE APLICAR** estas reglas en cada respuesta de código:
+
+1. **NUNCA** usar `any` o `implicit any`
+2. **SIEMPRE** tipar explícitamente funciones y variables
+3. **SIEMPRE** agregar comentarios JSDoc a funciones
+4. **NUNCA** incluir emojis en código
+5. **NUNCA** dejar funciones con contenido "TODO"
+6. **SIEMPRE** implementar funciones completamente
+7. **SIEMPRE** seguir principios SOLID, DRY y YAGNI
